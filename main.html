@@ -1,0 +1,78 @@
+<table style="position:absolute;z-index:1;">
+    <tr>
+        <td><input name="11" type="text" value=""/></td>
+        <td><input name="12" type="text" value=""/></td>
+        <td><input name="13" type="text" value=""/></td>
+    </tr>
+    <tr>
+        <td><input name="21" type="text" value=""/></td>
+        <td><input name="22" type="text" value=""/></td>
+        <td><input name="23" type="text" value=""/></td>
+    </tr>
+    <tr>
+        <td><button onclick="window.applyTransform(1,0,0,0,1,0)">identity</button></td>
+        <td><button onclick="window.rotate(Math.PI/2)">rotate pi/2</button></td>
+        <td><button onclick="window.rotate(Math.PI/-2)">rotate -pi/2</button></td>
+    </tr>
+    <tr>
+        <td><button onclick="window.rotate(Math.PI)">rotate pi</button></td>
+        <td><button onclick="window.rotate(Math.PI/-1)">rotate -pi</button></td>
+        <td><button onclick="window.applyTransform(1,0,100,0,1,100)">translate 100</button></td>
+    </tr>
+</table>
+<div id="testme" style="border-top-width:thick;border-top-style:solid;transition:1s;position:absolute;z-index:0;bottom:10rem;left:20rem;background-color:red;width:100px;height:100px;">
+</div>
+<script>
+ window.inputs = document.querySelectorAll('input');
+
+ window.buildMatrixCall = function (inputs) {
+     var nodes = [].map.call(inputs, node => node);
+     var topLeft = nodes.filter(function(node) {return node.name === '11'})[0],
+         botLeft = nodes.filter(function(node) {return node.name === '21'})[0],
+         topMid = nodes.filter(function(node) {return node.name === '12'})[0],
+         botMid = nodes.filter(function(node) {return node.name === '22'})[0],
+         topRight = nodes.filter(function(node) {return node.name === '13'})[0],
+         botRight = nodes.filter(function(node) {return node.name === '23'})[0],
+         args = [
+             topLeft.value,
+             botLeft.value,
+             topMid.value,
+             botMid.value,
+             topRight.value,
+             botRight.value,
+            ];
+
+     return "matrix(" + args.join(',') + ')';
+ }
+
+ window.applyTransform = function (tl, tm, tr, bl, bm, br) {
+     [].forEach.call(window.inputs, function (node) {
+         if (node.name === '11') {node.value = tl;}
+         if (node.name === '12') {node.value = tm;}
+         if (node.name === '13') {node.value = tr;}
+         if (node.name === '21') {node.value = bl;}
+         if (node.name === '22') {node.value = bm;}
+         if (node.name === '23') {node.value = br;}
+     });
+     window.inputs[0].dispatchEvent(new Event('input'));
+ }
+
+ window.rotate = function (theta) {
+     var args = [
+         Math.cos(theta),
+         Math.sin(theta) * -1,
+         0,
+         Math.sin(theta),
+         Math.cos(theta),
+         0
+     ];
+     window.applyTransform.apply(window, args);
+ }
+
+ Array.prototype.forEach.call(inputs, function (node) {
+     node.addEventListener('input', function (event) {
+         var test = document.getElementById('testme');
+         test.style.transform = window.buildMatrixCall(inputs);
+     })
+ })
+</script>
