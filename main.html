@@ -20,6 +20,10 @@
         <td><button onclick="window.rotate(Math.PI/-1)">rotate -pi</button></td>
         <td><button onclick="window.applyTransform(1,0,100,0,1,100)">translate 100</button></td>
     </tr>
+    <tr>
+        <td><button onclick="window.applyTransform(1,1,0,0,1,0)">shear upper</button></td>
+        <td><button onclick="window.applyTransform(1,0,0,1,1,0)">shear lower</button></td>
+    </tr>
 </table>
 <div id="testme" style="border-top-width:thick;border-top-style:solid;transition:1s;position:absolute;z-index:0;bottom:10rem;left:20rem;background-color:red;width:100px;height:100px;">
 </div>
