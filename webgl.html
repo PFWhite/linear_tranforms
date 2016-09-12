@@ -1,0 +1,39 @@
+<head>
+    <script>
+     var gl;
+
+    function initShaders() {
+        var fragmentShader = getShader(gl, "shader-fs");
+        var vertexShader = getShader(gl, "shader-vs");
+
+        shaderProgram = gl.createProgram();
+
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+
+        gl.useProgram(shaderProgram);
+        vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(vertexPositionAttribute);
+    }
+
+     function initWebGL(canvas) {
+        gl = null;
+        gl = canvas.getContext("webgl")
+        return gl;
+     }
+
+     function start() {
+         var canvas = document.getElementById('glcanvas');
+         gl = initWebGL(canvas);
+         gl.clearColor(0, 0, 0, 1);
+         gl.enable(gl.DEPTH_TEST);
+         gl.depthFunc(gl.LEQUAL);
+         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+     }
+    </script>
+</head>
+<body onload="start()">
+  <canvas id="glcanvas" width="640" height="480">
+  </canvas>
+</body>
